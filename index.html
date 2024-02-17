@@ -25,33 +25,21 @@
         <h1>Harry Potter Characters</h1>
       </div>
       <div>
-        <form>
+        <form id="form">
           <input type="text" placeholder="character" />
           <button type="submit">search</button>
           <button type="reset">reset</button>
         </form>
-        <ul class="character-list">
-          <li class="character-list__item">
-            <img src="/stub.png" alt="Harry Potter" />
-            <h3>Harry Potter</h3>
-            <p>gender: male</p>
-            <p>species: wizard</p>
-            <p>house: Hogwarts</p>
-            <p>patronus: Hogwarts</p>
-            <p>boggart: Hogwarts</p>
-          </li>
-          <li class="character-list__item">
-            <img src="/stub.png" alt="Harry Potter" />
-            <h3>Harry Potter</h3>
-            <p>gender: male</p>
-            <p>species: wizard</p>
-            <p>house: Hogwarts</p>
-            <p>patronus: Hogwarts</p>
-            <p>boggart: Hogwarts</p>
-          </li>
-          <li class="character-list__item">
-            <img src="/stub.png" alt="Harry Potter" />
-            <h3>Harry Potter</h3>
+        <ul id="character-list" class="character-list">
+          <li class="character-item">
+            <div class="character-item__image-container">
+              <img
+                class="character-item__image"
+                src="/stub.png"
+                alt="Harry Potter"
+              />
+            </div>
+            <h3 class="character-item__title">Harry Potter</h3>
             <p>gender: male</p>
             <p>species: wizard</p>
             <p>house: Hogwarts</p>
