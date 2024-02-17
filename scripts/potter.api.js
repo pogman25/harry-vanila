@@ -1,18 +1,22 @@
+import { DEFAULT_LINK } from "./constants";
+
 export class PotterAPI {
   constructor() {
     this.characterList = document.querySelector("#character-list");
+    this.characterActions = document.querySelector("#character-actions");
     this.charactersData = [];
+    this.links = {};
   }
 
-  async getCharacters() {
+  async getCharacters(url = DEFAULT_LINK) {
     // filter[name_cont]=Harry
-    const rawResult = await fetch(
-      "https://api.potterdb.com/v1/characters?page[size]=25"
-    );
+    const rawResult = await fetch(url);
     const result = await rawResult.json();
     this.charactersData = result.data;
-    console.log(this.charactersData);
+    this.links = result.links;
+    console.log(this.links);
     this.renderList();
+    this.renderActions();
   }
 
   static createTextItem(field, text) {
@@ -58,5 +62,27 @@ export class PotterAPI {
 
       this.characterList.appendChild(li);
     });
+  }
+
+  createAction(link, text) {
+    const button = document.createElement("button");
+    button.innerText = text;
+    button.addEventListener("click", () => {
+      this.getCharacters(link);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+    return button;
+  }
+
+  renderActions() {
+    this.characterActions.innerHTML = "";
+    if (this.links.prev) {
+      const prevButton = this.createAction(this.links.prev, "Prev");
+      this.characterActions.appendChild(prevButton);
+    }
+    if (this.links.next) {
+      const nextButton = this.createAction(this.links.next, "Next");
+      this.characterActions.appendChild(nextButton);
+    }
   }
 }
