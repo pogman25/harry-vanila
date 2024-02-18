@@ -20,7 +20,6 @@ export class PotterAPI {
     const result = await rawResult.json();
     this.charactersData = result.data;
     this.links = result.links;
-    console.log(this.charactersData);
     this.renderList();
     this.renderActions();
   }
