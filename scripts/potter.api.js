@@ -4,25 +4,25 @@ export class PotterAPI {
   constructor() {
     this.characterList = document.querySelector("#character-list");
     this.characterActions = document.querySelector("#character-actions");
+    this.form = document.querySelector("#form");
     this.charactersData = [];
     this.links = {};
-  }
-
-  async getCharacters(url = DEFAULT_LINK) {
-    // filter[name_cont]=Harry
-    const rawResult = await fetch(url);
-    const result = await rawResult.json();
-    this.charactersData = result.data;
-    this.links = result.links;
-    console.log(this.links);
-    this.renderList();
-    this.renderActions();
   }
 
   static createTextItem(field, text) {
     const textElement = document.createElement("p");
     textElement.innerText = `${field}: ${text ?? "unknown"}`;
     return textElement;
+  }
+
+  async getCharacters(url = DEFAULT_LINK) {
+    const rawResult = await fetch(url);
+    const result = await rawResult.json();
+    this.charactersData = result.data;
+    this.links = result.links;
+    console.log(this.charactersData);
+    this.renderList();
+    this.renderActions();
   }
 
   renderList() {
@@ -41,6 +41,7 @@ export class PotterAPI {
 
       const title = document.createElement("h3");
       title.classList.add("character-item__title");
+      title.setAttribute("title", attributes.name);
       title.innerText = attributes.name;
 
       const gender = PotterAPI.createTextItem("gender", attributes.gender);
@@ -76,6 +77,10 @@ export class PotterAPI {
 
   renderActions() {
     this.characterActions.innerHTML = "";
+    if (this.links.first) {
+      const firstButton = this.createAction(this.links.first, "First");
+      this.characterActions.appendChild(firstButton);
+    }
     if (this.links.prev) {
       const prevButton = this.createAction(this.links.prev, "Prev");
       this.characterActions.appendChild(prevButton);
@@ -84,5 +89,21 @@ export class PotterAPI {
       const nextButton = this.createAction(this.links.next, "Next");
       this.characterActions.appendChild(nextButton);
     }
+  }
+
+  initSearch() {
+    this.form.addEventListener("submit", (evt) => {
+      evt.preventDefault();
+      const input = evt.target.querySelector("input");
+      const { value } = input;
+      const trimmedValue = value.trim();
+      if (trimmedValue) {
+        this.getCharacters(`${DEFAULT_LINK}&filter[name_cont]=${trimmedValue}`);
+      }
+    });
+    const resetButton = this.form.querySelector("#form__reset");
+    resetButton.addEventListener("click", () => {
+      this.getCharacters();
+    });
   }
 }

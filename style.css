@@ -100,6 +100,19 @@ button:focus-visible {
   }
 }
 
+.form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.form__input {
+  width: 300px;
+  padding: 0.6em 1em;
+  font-size: 1em;
+}
+
 .character-list {
   list-style: none;
   display: grid;
